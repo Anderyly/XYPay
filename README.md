@@ -34,6 +34,7 @@
     
         + 网站目录->运行目录 设置为public并保存
         + 伪静态 设置为thinkphp并保存
+        + 执行composer install 安装依赖
     
     3、打开网站目录 config/database.php ，设置好您的mysql账号密码。
     
