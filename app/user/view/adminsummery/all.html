@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$siteConf['title']} - 订单统计</title>
+
+    <meta name="keywords" content="{$siteConf['keywords']}">
+    <meta name="description" content="{$siteConf['description']}">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/admin/css/animate.css" rel="stylesheet">
+    <!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+    <link href="/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/admin/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+
+    <link href="/admin/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <style type="text/css">
+        .long-tr th{
+            text-align: center
+        }
+        .long-td td{
+            text-align: center
+        }
+        /*elementUI分页样式*/
+        .layout-pagination {
+            text-align: right;
+            margin-top: 15px;
+        }
+        .control-label{
+            margin-top: 7px;
+            text-align: right;
+        }
+    </style>
+</head>
+<div class="col-xs-12 col-sm-9 col-lg-10">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="{:url('all')}" method="post">
+
+                <div class="form-group" style="margin-left: 40px">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">时间</label>
+                    <div class="col-sm-8 col-lg-10 col-xs-12">
+                        <input name="ordertimestart" type="hidden" value="{:date('Y-m-d H:i:s', strtotime('-1
+                        day'))}" />
+                        <input name="ordertimeend" type="hidden" value="{:date('Y-m-d H:i:s', time())}"/>
+                        <button class="btn btn-default daterange daterange-time" type="button">
+                            <span class="date-title">{:date("Y-m-d H:i:s", strtotime("-1 day"))} 至 {:date('Y-m-d H:i:s', time())}</span>
+                            <i class="fa fa-calendar"></i></button>
+                    </div>
+                </div>
+
+
+                <div class="form-group" style="margin-top:20px;margin-left: 40px">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">账号</label>
+                    <div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+                        <input type="text" class="form-control" name="key" value="{$key}">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top:20px;margin-left: 40px">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+                    <div class="col-sm-8 col-lg-10 col-xs-12">
+                        <div class="input-group">
+                            <button class="btn btn-default" style="width:100px;"><i class="fa fa-search"></i>&nbsp;搜索
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-info" style="padding:0px;">
+        <div class="panel-heading">
+            <center><span style="font-size:22px;">订单汇总报表</span></center>
+        </div>
+        <div class="panel-body" id="panelbody">
+            <table class="table table-hover">
+                <thead class="navbar-inner">
+
+                <tr>
+                    <th style="width:10%;text-align:center;">账号</th>
+                    <th style="text-align:center;">总订单数量</th>
+                    <th style="text-align:center;">支付宝数量</th>
+                    <th style="text-align:center;">微信数</th>
+                    <th style="text-align:center;">成功订单数量</th>
+                    <th style="text-align:center;">失败订单数量</th>
+                    <th style="text-align:center;">成功支付金额</th>
+                    <th style="text-align:center;">失败支付金额</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                { loop $res as $v }
+                <tr>
+                    <td style="text-align:center;">{$v['account']}</td>
+                    <td style="text-align:center;">{$v['all']}</td>
+
+                    <td style="text-align:center;">{$v['zfb']}</td>
+                    <td style="text-align:center;">{$v['wx']}</td>
+                    <td style="text-align:center;">{$v['success']}</td>
+                    <td style="text-align:center;">{$v['fail']}</td>
+                    <td style="text-align:center;color:red">{$v['successPrice']}</td>
+                    <td style="text-align:center;color:red">{$v['failPrice']}</td>
+
+                </tr>
+                { loop }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script type="text/javascript" src="/admin/js/jquery.min.js"></script>
+<script type="text/javascript" src="/admin/daterangepicker/moment.js"></script>
+<script type="text/javascript" src="/admin/daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".daterange.daterange-time").each(function () {
+            var elm = this;
+            $(this).daterangepicker({
+                startDate: $(elm).prev().prev().val(),
+                endDate: $(elm).prev().val(),
+                format: "YYYY-MM-DD HH:mm",
+                timePicker: true,
+                timePicker12Hour: false,
+                timePickerIncrement: 1,
+                minuteStep: 1
+            }, function (start, end) {
+                $(elm).find(".date-title").html(start.toDateTimeStr() + " 至 " + end.toDateTimeStr());
+                $(elm).prev().prev().val(start.toDateTimeStr());
+                $(elm).prev().val(end.toDateTimeStr());
+            });
+        });
+    });
+</script>

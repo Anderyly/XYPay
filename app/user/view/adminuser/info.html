@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$siteConf['title']} - 添加用户</title>
+
+    <meta name="keywords" content="{$siteConf['keywords']}">
+    <meta name="description" content="{$siteConf['description']}">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/admin/css/animate.css" rel="stylesheet">
+    <!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+    <link href="/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/admin/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/admin/elementUI/css/index.min.css" rel="stylesheet">
+    <script src="/admin/elementUI/js/vue.min.js"></script>
+    <script src="/admin/elementUI/js/index.min.js"></script>
+    <!--<script src="/admin/laydate/laydate.js"></script>-->
+    <style type="text/css">
+        .long-tr th{
+            text-align: center
+        }
+        .long-td td{
+            text-align: center
+        }
+        /*elementUI分页样式*/
+        .layout-pagination {
+            text-align: right;
+            margin-top: 15px;
+        }
+        .control-label{
+            margin-top: 7px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <!--                <div class="ibox-title">-->
+                <!--                    <h5>添加菜单</h5>-->
+                <!--                </div>-->
+                <div class="ibox-content">
+                    <form class="form-horizontal" name="add" id="add" method="post" action="{:url('infoAjax')}">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">账号：</label>
+                            <div class="col-sm-4">
+                                <input id="account" name="account" class="form-control" type="text" value="{$res['account']}" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码：</label>
+                            <div class="col-sm-4">
+                                <input id="password" name="password" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">金额：</label>
+                            <div class="col-sm-4">
+                                <input id="money" name="money" class="form-control" type="text" value="{$res['money']}">
+                                <input id="uid" name="uid" class="form-control" type="hidden" value="{$res['uid']}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">套餐：</label>
+                            <div class="col-sm-4">
+                                <select id="sel_role" name="meal" class="form-control" title="请选择">
+                                    { loop $meal as $v }
+                                    <option value="{$v['mid']}" { if code=`$res.mid == $v.mid` } selected {if}>{$v['name']}/{$v['sxf']}%</option>
+                                    { loop }
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">监控密钥：</label>
+                            <div class="col-sm-4">
+                                <input id="vKey" name="vKey" class="form-control" type="text" value="{$res['vKey']}">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">状态：</label>
+                            <div class="col-sm-4">
+                                <select id="sel_role" name="status" class="form-control" title="请选择">
+                                    <option value="1" { if code=`$res['status'] == 1` } selected {if}>启用</option>
+                                    <option value="0" { if code=`$res['status'] == 0` } selected {if}>禁用</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button id="btnSubmit" class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/admin/js/content.min.js?v=1.0.0"></script>
+<script src="/admin/js/plugins/chosen/chosen.jquery.js"></script>
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<!--<script src="/admin/js/plugins/layer/laydate/laydate.js"></script>-->
+<script src="/admin/js/plugins/switchery/switchery.js"></script><!--IOS开关样式-->
+<script src="/admin/js/jquery.form.js"></script>
+<script src="/admin/js/moment.min.js"></script>
+<script src="/admin/js/layer/layer.js"></script>
+<script src="/admin/js/laypage/laypage.js"></script>
+<script src="/admin/js/laytpl/laytpl.js"></script>
+<script src="/admin/js/lunhui.js"></script>
+<script>
+    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+</script>
+
+<script type="text/javascript">
+
+    //提交
+    $(function(){
+        $('#add').ajaxForm({
+            beforeSubmit: checkForm,
+            success: complete,
+            dataType: 'json'
+        });
+
+        function checkForm(){
+
+        }
+
+        function complete(data){
+            if(data.code == 200){
+                parent.layer.msg(data.msg,{icon: 1,time:2000,shade: 0.1},function(index){
+                    parent.location.reload();
+                });
+            }else{
+                parent.layer.msg(data.msg, {icon: 2,time:1500,shade: 0.1});
+                return false;
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>

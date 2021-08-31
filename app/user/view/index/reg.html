@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{$siteConf['title']} - 注册</title>
+    <meta name="keywords" content="{$siteConf['keywords']}">
+    <meta name="description" content="{$siteConf['description']}">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <!--<link href="/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">-->
+    <link href="/admin/css/animate.css" rel="stylesheet">
+    <link href="/admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <script>if (window.top !== window.self) {
+        window.top.location = window.location;
+    }</script>
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <h3>{$siteConf['title']}</h3>
+
+        <form class="m-t" role="form" action="index.html">
+            <div class="form-group">
+                <input type="text" id="user" class="form-control" placeholder="用户名" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" class="form-control" placeholder="密码" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" id="repassword" class="form-control" placeholder="确定密码" required="">
+            </div>
+            <input type="hidden" id="aff" value="{$aff}">
+            <button type="button" class="btn btn-primary block full-width m-b" id="login">立即注册</button>
+            <p class="text-muted text-center">已经有账户了？<a href="{:url('login')}">点击登入</a>
+            <p class="m-t">{$siteConf['footer']}</p>
+        </form>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<!--<script src="/admin/js/plugins/sweetalert/sweetalert.min.js"></script>-->
+
+<script src="//cdn.bootcss.com/layer/2.3/layer.js"></script>
+<script src="/admin/js/codebase.core.min.js"></script>
+<script src="/admin/js/codebase.app.min.js"></script>
+<script src="//static.geetest.com/static/tools/gt.js"></script>
+<script>
+    $.ajax({
+        url: "/geet?t=" + (new Date()).getTime(),
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            initGeetest({
+                gt: data.gt,
+                challenge: data.challenge,
+                new_captcha: data.new_captcha,
+                product: "bind",
+                offline: !data.success,
+                width: '100%'
+            }, handlerEmbed);
+        },
+        timeout: 10000,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            if (textStatus == "timeout") {
+                layer.msg('请求超时！');
+            } else {
+                layer.msg('服务器错误！');
+            }
+        }
+    });
+
+    var handlerEmbed = function (captchaObj) {
+        captchaObj.onReady(function () {
+            $("#wait").hide();
+        }).onSuccess(function () {
+            var result = captchaObj.getValidate();
+            var aff = $("#aff").val();
+            var user = $("#user").val();
+            var password = $("#password").val();
+            var repassword = $("#repassword").val();
+            if (user == '' || password == '' || repassword == '') {
+                layer.alert('请确保每项不为空！', {icon: 5});
+                return false;
+            }
+            if (!result) {
+                layer.alert('请先完成滑动验证！', {icon: 5});
+                return false;
+            }
+            layer.msg('登录中...', {
+                icon: 16
+                , shade: 0.01
+                , time: false
+            });
+            $.ajax({
+                url: "{:url('/user/index/regAjax')}",
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    user: user,
+                    password: password,
+                    repassword: repassword,
+                    aff: aff,
+                    geetest_challenge: result.geetest_challenge,
+                    geetest_validate: result.geetest_validate,
+                    geetest_seccode: result.geetest_seccode
+                },
+                success: function (data) {
+                    layer.closeAll();
+                    if (data.code == 200) {
+                        captchaObj.reset();
+                        layer.alert(data.msg, {icon: 6}, function () {
+                            window.location.href = "{:url('login')}";
+                        });
+                    } else {
+                        captchaObj.reset();
+                        layer.alert(data.msg, {icon: 5});
+                    }
+                },
+                timeout: 10000,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    layer.closeAll();
+                    if (textStatus == "timeout") {
+                        captchaObj.reset();
+                        layer.msg('请求超时！');
+                    } else {
+                        captchaObj.reset();
+                        layer.msg('服务器错误！');
+                    }
+                }
+            });
+        });
+        $(document).keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("#login").click();
+            }
+        });
+        $("#login").click(function () {
+            var user = $("#user").val();
+            var password = $("#password").val();
+            var repassword = $("#repassword").val();
+            if (user == '' || password == '' || repassword == '') {
+                layer.alert('请确保每项不为空！', {icon: 5});
+                return false;
+            }
+            captchaObj.verify();
+        });
+    };
+
+</script>
+</body>
+</html>

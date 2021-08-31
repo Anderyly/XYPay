@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$siteConf['title']} - 套餐管理</title>
+
+    <meta name="keywords" content="{$siteConf['keywords']}">
+    <meta name="description" content="{$siteConf['description']}">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/admin/css/animate.css" rel="stylesheet">
+    <link href="/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/admin/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/admin/elementUI/css/index.min.css" rel="stylesheet">
+    <script src="/admin/elementUI/js/vue.min.js"></script>
+    <script src="/admin/elementUI/js/index.min.js"></script>
+    <style type="text/css">
+        .long-tr th {
+            text-align: center
+        }
+
+        .long-td td {
+            text-align: center
+        }
+
+        /*elementUI分页样式*/
+        .layout-pagination {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        .control-label {
+            margin-top: 7px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="app" v-cloak>
+        <template>
+            <div class="ibox-title">
+                <h5>套餐管理</h5>
+            </div>
+            <div class="ibox-content">
+                <!--工具条-->
+                <el-form :inline="true" class="demo-form-inline">
+                    <el-form-item>
+                        <div class="col-sm-3" style="padding-left: 0px;">
+                            <div class="input-group">
+                                <input type="text" class="form-control" v-model="key" placeholder="名称"/>
+                                <span class="input-group-btn">
+                                    <a type="button" class="btn btn-primary" @click="search"><i
+                                            class="fa fa-search"></i> 搜索</a>
+                                </span>
+                            </div>
+                        </div>
+                        <a type="button" class="btn btn-info" @click="add">
+                            <i class="fa fa-trash-o"></i> 新增
+                        </a>
+                        <a type="button" class="btn btn-danger" @click="del">
+                            <i class="fa fa-trash-o"></i> 删除
+                        </a>
+                    </el-form-item>
+                </el-form>
+
+                <div class="example-wrap">
+                    <div class="example">
+                        <el-table :data="tableData" border highlight-current-row v-loading="listLoading"
+                                  element-loading-text="拼命加载中..." @selection-change="handleSelectionChange"
+                                  style="width: 100%">
+                            <el-table-column type="selection" width="60" align="center"></el-table-column>
+                            <el-table-column prop="mid" label="#" min-width="110%" show-overflow-tooltip
+                                             align="center"></el-table-column>
+                            <el-table-column prop="name" label="名称" show-overflow-tooltip
+                                             align="center"></el-table-column>
+                            <el-table-column prop="sxf" label="费率(%)" show-overflow-tooltip
+                                             align="center"></el-table-column>
+                            <el-table-column prop="price" label="价格" show-overflow-tooltip
+                                             align="center"></el-table-column>
+                            <!--<el-table-column prop="status" label="状态" :formatter="formatStatus" show-overflow-tooltip align="center"></el-table-column>-->
+                            <!--<el-table-column prop="createTime" label="创建时间" :formatter="formatDate" show-overflow-tooltip align="center"></el-table-column>-->
+                            <el-table-column align="center" width="130" label="操作">
+                                <template scope="scope">
+                                    <el-button size="small" type="text" @click="info(scope.row.mid)">修改</el-button>
+                                    <!--<el-button size="small" type="text" @click="info(scope.row.out_trade_no)">详情</el-button>-->
+                                    <el-button size="small" type="text" @click="del(scope.row.mid)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <div class="layout-pagination">
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="currentPage"
+                                    :page-sizes="[10, 20, 50, 100]"
+                                    :page-size="pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="totalCount">
+                            </el-pagination>
+                        </div>
+                    </div>
+                </div>
+        </template>
+    </div>
+</div>
+</div>
+
+
+<script src="/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/admin/js/content.min.js?v=1.0.0"></script>
+<script src="/admin/js/plugins/chosen/chosen.jquery.js"></script>
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/admin/js/plugins/layer/laydate/laydate.js"></script>
+<script src="/admin/js/plugins/switchery/switchery.js"></script><!--IOS开关样式-->
+<script src="/admin/js/jquery.form.js"></script>
+<script src="/admin/js/moment.min.js"></script>
+<script src="/admin/js/layer/layer.js"></script>
+<script src="/admin/js/laypage/laypage.js"></script>
+<script src="/admin/js/laytpl/laytpl.js"></script>
+<script src="/admin/js/lunhui.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",})
+    });
+</script>
+
+<script type="text/javascript">
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            imgPath: '/uploads/face/',
+            //表格当前页数据
+            tableData: [],
+            //多选数组
+            multipleSelection: [],
+            //搜索条件
+            key: '',
+            //默认每页数据量
+            pageSize: 10,
+            //当前页码
+            currentPage: 1,
+            //默认数据总数
+            totalCount: 0,
+            //列表加载遮罩
+            listLoading: false,
+
+        },
+        methods: {
+            //从服务器读取数据
+            loadData(key, currentPage, pageSize) {
+                vm.listLoading = true;
+                $.getJSON('{:url("getList")}', {key: key, page: currentPage, rows: pageSize}, function (data) {
+                    vm.tableData = [];
+                    vm.totalCount = data.count;
+                    for (var i = 0; i < data.data.length; i++) {
+                        if (data.data[i]) {
+                            vm.tableData.push(data.data[i]);
+                        }
+                    }
+                    vm.listLoading = false;
+                });
+            },
+            formatType: function (row, column, cellValue, index) {
+                return row.type == 1 ? '支付宝' : row.type == 2 ? '微信' : '未知';
+            },
+            formatDate: function (row, column, cellValue, index) {
+                return moment(row.createTime * 1000).format("YYYY-MM-DD HH:mm:ss");
+            },
+            formatStatus: function (row, column, cellValue, index) {
+                return row.status == 1 ? '支付成功' : row.status == 0 ? '等待支付' : row.status == -1 ? '订单过期' : row.status == 3 ? '等待通知' : '通知失败';
+            },
+            openMessage(type, message) {
+                this.$message({
+                    type: type,
+                    duration: 1500,
+                    message: message
+                });
+            },
+
+            //每页显示数据量变更
+            handleSizeChange(val) {
+                this.pageSize = val;
+                this.loadData(this.key, this.currentPage, this.pageSize);
+            },
+            //页码变更
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.loadData(this.key, this.currentPage, this.pageSize);
+            },
+            //多选响应
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            //搜索
+            search() {
+                this.loadData(this.key, this.currentPage, this.pageSize);
+                vm.listLoading = false;
+            },
+            // 通知
+            tz(out_trade_no) {
+                this.$confirm('此操作将发起通知, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.ajax({
+                        url: '{:url("tz")}',
+                        data: "out_trade_no=" + out_trade_no,
+                        type: "POST",
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.code == 200) {
+                                vm.openMessage('success', res.msg);
+                                vm.loadData(vm.key, vm.currentPage, vm.pageSize);
+                            } else {
+                                vm.openMessage('error', res.msg);
+                            }
+                        },
+                        error: function (er) {
+
+                        }
+                    });
+                }).catch(() => {
+                    vm.openMessage('info', '已取消通知');
+                });
+            },
+
+            //批量删除
+            del(mid) {
+                if (this.multipleSelection.length == 0) {
+                    vm.openMessage('warning', '请选择至少一条数据进行删除！');
+                    return;
+                }
+                var array = [];
+                this.multipleSelection.forEach((row) => {
+                    array.push(row.mid);
+                })
+
+                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.ajax({
+                        url: '{:url("del")}',
+                        data: "mid=" + array,
+                        type: "POST",
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.code == 200) {
+                                vm.openMessage('success', res.msg);
+                                vm.loadData(vm.key, vm.currentPage, vm.pageSize);
+                            } else {
+                                vm.openMessage('error', res.msg);
+                            }
+                        },
+                        error: function (er) {
+
+                        }
+                    });
+                }).catch(() => {
+                    vm.openMessage('info', '已取消删除');
+                });
+            }
+        }
+    })
+
+    //载入数据
+    vm.loadData(vm.key, vm.currentPage, vm.pageSize);
+
+
+    function info(mid) {
+        layer.open({
+            type: 2,
+            title: '详情',
+            shadeClose: false,
+            scrollbar: false,
+            maxmin: true,
+            shade: 0.2,
+            area: ['40%', '60%'],
+            content: '{:url("info")}?mid=' + mid,
+        });
+    }
+
+    function add() {
+        layer.open({
+            type: 2,
+            title: '详情',
+            shadeClose: false,
+            scrollbar: false,
+            maxmin: true,
+            shade: 0.2,
+            area: ['40%', '60%'],
+            content: '{:url("add")}',
+        });
+    }
+
+
+</script>
+</body>
+</html>

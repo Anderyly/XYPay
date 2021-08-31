@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$siteConf['title']} - 微信二维码管理</title>
+
+    <meta name="keywords" content="{$siteConf['keywords']}">
+    <meta name="description" content="{$siteConf['description']}">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/admin/css/animate.css" rel="stylesheet">
+    <link href="/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/admin/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/admin/elementUI/css/index.min.css" rel="stylesheet">
+    <script src="/admin/elementUI/js/vue.min.js"></script>
+    <script src="/admin/elementUI/js/index.min.js"></script>
+    <style type="text/css">
+        .long-tr th {
+            text-align: center
+        }
+
+        .long-td td {
+            text-align: center
+        }
+
+        /*elementUI分页样式*/
+        .layout-pagination {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        .control-label {
+            margin-top: 7px;
+            text-align: right;
+        }
+    </style>
+</head>
+<link rel="stylesheet" type="text/css" href="/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/admin/webupload/style.css">
+<style>
+    .file-item {
+        float: left;
+        position: relative;
+        width: 110px;
+        height: 110px;
+        margin: 0 20px 20px 0;
+        padding: 4px;
+    }
+
+    .file-item .info {
+        overflow: hidden;
+    }
+
+    .uploader-list {
+        width: 100%;
+        overflow: hidden;
+    }
+</style>
+<body>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form-horizontal" name="edit" id="edit" method="post" action="{:url('ajaxPost')}">
+                <div class="form-group">
+                    <label class="col-xs-3 col-sm-3 control-label">固码：</label>
+                    <div class="input-group col-xs-8 col-sm-4">
+                        <input type="hidden" id="url" name="url" value=""/>
+                        <div id="fileList" class="uploader-list" style="float:right"></div>
+                        <div id="imgPicker" style="float:left">选择固码</div>
+                        <img id="img_data" class="img-circle" height="80px" width="80px"
+                             style="float:left;margin-left: 50px;margin-top: -10px;" src="/uploads/face/"/>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-xs-3 col-sm-3 control-label">二维码地址：</label>
+                    <div class="input-group col-xs-8 col-sm-4">
+                        <input id="gm" type="text" class="form-control" placeholder="" disabled>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-xs-3 col-sm-3 control-label">固码金额：</label>
+                    <div class="input-group col-xs-8 col-sm-4">
+                        <input id="total" type="text" class="form-control" name="total" required="" aria-required="true"
+                               value="">
+
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <div class="col-xs-6 col-sm-3 col-xs-offset-4">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <button id="closeIframe" class="btn btn-danger" type="button"><i class="fa fa-close"></i> 关闭
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/admin/js/content.min.js?v=1.0.0"></script>
+<script src="/admin/js/plugins/chosen/chosen.jquery.js"></script>
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/admin/js/plugins/layer/laydate/laydate.js"></script>
+<script src="/admin/js/plugins/switchery/switchery.js"></script><!--IOS开关样式-->
+<script src="/admin/js/jquery.form.js"></script>
+<script src="/admin/js/moment.min.js"></script>
+<script src="/admin/js/layer/layer.js"></script>
+<script src="/admin/js/laypage/laypage.js"></script>
+<script src="/admin/js/laytpl/laytpl.js"></script>
+<script src="/admin/js/lunhui.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",})
+    });
+</script>
+<script type="text/javascript" src="/admin/webupload/webuploader.min.js"></script>
+<script type="text/javascript">
+    var $list = $('#fileList');
+    //上传图片,初始化WebUploader
+    var uploader = WebUploader.create({
+
+        auto: true,// 选完文件后，是否自动上传。
+        swf: '/public/admin/webupload/Uploader.swf',// swf文件路径
+        server: "{:url('upload')}",// 文件接收服务端。
+        duplicate: true,// 重复上传图片，true为可重复false为不可重复
+        pick: '#imgPicker',// 选择文件的按钮。可选。
+
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/jpg,image/jpeg,image/png'
+        },
+
+        'onUploadSuccess': function (file, data, response) {
+            if (data.code == 200) {
+                $("#url").val(data.data.url);
+                $("#gm").val(data.data.url);
+                $("#img_data").attr('src', data.data.dz).show();
+            } else {
+                layer.msg(data.msg, {icon: 2, time: 1500, shade: 0.1}, function (index) {
+                    layer.close(index);
+                });
+            }
+        }
+    });
+
+    uploader.on('fileQueued', function (file) {
+        $list.html('<div id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            '<p class="state">正在上传...</p>' +
+            '</div>');
+    });
+
+    // 文件上传成功
+    uploader.on('uploadSuccess', function (file) {
+        $('#' + file.id).find('p.state').text('上传成功！');
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on('uploadError', function (file) {
+        $('#' + file.id).find('p.state').text('上传出错!');
+    });
+
+    //提交
+    $(function () {
+        $('#edit').ajaxForm({
+            beforeSubmit: checkForm,
+            success: complete,
+            dataType: 'json',
+            success: function (res) {
+                if (res.code == 200) {
+                    layer.msg("添加成功", {icon: 1, time: 1500, shade: 0.1}, function (index) {
+                        layer.close(index);
+                        parent.location.reload();
+                    });
+                } else {
+                    layer.msg("添加失败", {icon: 2, time: 1500, shade: 0.1}, function (index) {
+                        layer.close(index);
+                    });
+                }
+            }
+        });
+
+        function checkForm() {
+            if ('' == $.trim($('#total').val())) {
+                layer.msg('请输入固码金额', {icon: 2, time: 1500, shade: 0.1}, function (index) {
+                    layer.close(index);
+                });
+                return false;
+            }
+        }
+
+
+        function complete(data) {
+            if (data.code == 1) {
+                parent.layer.msg(data.msg, {icon: 1, time: 1500, shade: 0.1}, function (index) {
+                    var win = parent.layer.getFrameIndex(window.name);  //获取窗口索引
+                    parent.layer.close(win);     //关闭父页面
+                    parent.vm.loadData(); //执行父页面的loadData方法
+                });
+            } else {
+                parent.layer.msg(data.msg, {icon: 2, time: 1500, shade: 0.1});
+                return false;
+            }
+        }
+
+    });
+
+
+    //IOS开关样式配置
+    var elem = document.querySelector('.js-switch');
+    var switchery = new Switchery(elem, {
+        color: '#1AB394'
+    });
+    var config = {
+        '.chosen-select': {},
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+
+</script>
+</body>
+</html>

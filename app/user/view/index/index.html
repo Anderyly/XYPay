@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>{$siteConf['title']} - 主页</title>
+
+    <meta name="keywords" content="{$siteConf['keywords']}">
+    <meta name="description" content="{$siteConf['description']}">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/admin/css/animate.css" rel="stylesheet">
+    <link href="/admin/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<div id="wrapper">
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close">
+            <i class="fa fa-times-circle"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span>
+                            <img alt="image" class="img-circle" src="https://gravatar.helingqi.com/wavatar/8fd6706f74d2037e80aa74cd580cd489"/>
+                        </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                                <span class="block m-t-xs text-muted text-xs block">
+                                    <strong class="font-bold">{$user['account']}</strong>
+                                    <span class="caret"></span>
+                                </span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li>
+                                <a class="J_menuItem" data-index="0" href="{:url('set')}">个人设置</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="{:url('pass')}" data-index="0">修改密码</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" data-index="0" href="{:url('logout')}">安全退出</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">AY
+                    </div>
+                </li>
+                <li>
+                    <a class="J_menuItem" href="{:url('home')}"><i class="fa fa-home"></i> <span class="nav-label">首页</span></a>
+                </li>
+                { if code=`$user.uid == 1` }
+                    <li>
+                        <a href="#">
+                            <i class="fa fa fa-bar-chart-o"></i>
+                            <span class="nav-label">后台管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="{:url('AdminUser/all')}">用户管理</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="{:url('AdminOrder/all')}">订单管理</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="{:url('AdminSummery/all')}">收入统计</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="{:url('AdminMeal/all')}">套餐管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                
+                {if}
+                <li>
+                    <a class="J_menuItem" href="{:url('Order/all')}"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">订单</span></a>
+                </li>
+                <li>
+                    <a class="J_menuItem" href="{:url('Job/index')}"><i class="fa fa-desktop"></i> <span class="nav-label">监控</span></a>
+                </li>
+                <li>
+                    <a class="J_menuItem" href="{:url('WePay/all')}"><i class="fa fa-magic"></i> <span class="nav-label">微信二维码</span></a>
+                </li>
+                <li>
+                    <a class="J_menuItem" href="{:url('AliPay/all')}"><i class="fa fa-magic"></i> <span class="nav-label">支付宝二维码</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--左侧导航结束-->
+
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+
+                </div>
+            </nav>
+        </div>
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+            </button>
+            <nav class="page-tabs J_menuTabs">
+                <div class="page-tabs-content">
+                    <a href="javascript:;" class="active J_menuTab" data-id="{:url('home')}">首页</a>
+                </div>
+            </nav>
+            <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i></button>
+            <div class="btn-group roll-nav roll-right">
+                <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span></button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                    <li class="J_tabShowActive">
+                        <a>定位当前选项卡</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="J_tabCloseAll">
+                        <a>关闭全部选项卡</a>
+                    </li>
+                    <li class="J_tabCloseOther">
+                        <a>关闭其他选项卡</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="{:url('logout')}" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+        </div>
+        <div class="row J_mainContent" id="content-main">
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{:url('home')}" frameborder="0" data-id="{:url('home')}" seamless></iframe>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                {$siteConf['footer']}
+            </div>
+        </div>
+    </div>
+    <!--右侧部分结束-->
+
+</div>
+
+<!-- 全局js -->
+<script src="/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/admin/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="/admin/js/hplus.js?v=4.1.0"></script>
+<script type="text/javascript" src="/admin/js/contabs.js"></script>
+
+<!-- 第三方插件 -->
+<script src="/admin/js/plugins/pace/pace.min.js"></script>
+
+</body>
+
+</html>

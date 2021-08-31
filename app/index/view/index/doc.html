@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=yes">
+<link href="/favicon.ico" rel="shortcut icon"/>
+<title>开发者中心 - {$siteConf['smtitle']}</title>
+<meta name="description" content="{$siteConf['description']}">
+<meta name="keywords" content="{$siteConf['keywords']}">
+<link rel="stylesheet" href="/home/default/css/qietu.css">
+<link rel="stylesheet" type="text/css" href="/home/default/css/iconfont.css"/>
+<link rel="stylesheet" type="text/css" href="/home/default/css/animate.min.css"/>
+<link rel="stylesheet" href="/home/default/css/style.css">
+<link rel="stylesheet" href="/home/default/css/style_tr.css">
+<link rel="stylesheet" href="/home/default/css/responsive.css">
+
+<meta name="__hash__" content="3b6c75caa0f284a6c51f97b7b2f631df_1b1aceae74342b51727196a974f79531" /></head>
+
+<body>
+<div class="header  bj-3d7bf8">
+    <div class="wrapper">
+        <div class="logo">
+            <a href="/"><img src="/logo.png" style="width:100px;"/></a>
+        </div>
+        <div class="nav-wrap">
+            <div class="nav">
+                <ul>
+                    <li class="home_index">
+                       <strong><a href="/">首页 </a></strong>
+                    </li>
+                    <li>
+                        <strong><a href="#">产品中心<i class="iconfont icon-jiantou8"></i></a></strong>
+                        <dl>
+                            <dd><a href="index#pro1">聚合收款</a></dd>
+                            <dd><a href="index#pro2">子商户系统</a></dd>
+                            <dd><a href="index#pro3">代付系统</a></dd>
+                            <dd><a href="index#pro4">二维码支付</a></dd>
+                        </dl>
+                    </li>
+                    <!-- <li>
+                        <strong><a href="/home/index/help.html">帮助中心</a></strong>
+                    </li> -->
+                    <li >
+                        <strong><a href="#">开发者中心<i class="iconfont icon-jiantou8"></i></a></strong>
+                        <dl>
+                           <dd><a href="/demo">DEMO体验</a></dd>
+                           <dd><a href="/doc">API开发文档</a></dd>
+                           <dd><a href="/job.apk">监控下载</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns">
+                <ul>       
+                 
+                    <li class=" reg"><a href="{:url('user/index/login')}">商户登入</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="gh"><a href="#"></a></div>
+    </div>
+</div>
+<div class="banner">
+	<div class="wrapper">
+		<h2>API开发文档</h2>
+		<p>-API documentation -</p>
+	</div>
+</div>
+<div class="wrapper">
+	<div class="docs">
+		<div class="docs-nav">
+			<ul>
+				<li class="on" href="#doc1"><a href="#">API开发文档简介</a></li>
+                <li><a  href="#doc22">接入网关</a></li>
+				<li><a  href="#doc66">签名算法</a></li>
+				<li><a  href="#doc4">商户统一下单API</a></li>
+				<li><a  href="#doc5">异步通知</a></li>
+				<li><a  href="#doc6">订单查询</a></li>
+				<li><a  href="#doc7">订单状态查询</a></li>
+				<li><a  href="#doc8">app监控</a></li>
+				<!--<li><a  href="#doc9">账户余额查询接口</a></li>-->
+			</ul>
+		</div>
+		<div class="docs-main">
+			<div class="docs-mod" id="doc1">
+				<div class="docs-hd">
+					API开发文档简介
+				</div>
+				<div class="docs-bd">
+					本文阅读对象：使用 {$siteConf['title']} 商户自服务系统的技术架构师、研发工程师、系统运维工程师。通过本文档，商户可了解 {$siteConf['title']} 接入的技术、接入的产品业务、接入的流程、接入规范等信息，以便于商户顺利完成接入工作。
+				</div>
+			</div>
+
+			
+			<div class="docs-mod"  id="doc22">
+				<div class="docs-hd">
+					接入网关
+				</div>
+				<div class="docs-bd">
+					http://pay.vclove.cn
+				</div>
+			</div>
+			
+			<div class="docs-mod" id="doc4">
+				<div class="docs-hd">
+					统一下单接口
+				</div>
+				<div class="docs-bd">
+					<div class="docs-sub">
+						提交方式：POST
+					</div>
+					<div class="docs-sub">
+						地址： 接入网关/createOrder
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参与签名</th><th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>uid</td>
+							<td style="text-align: left;">商户号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">平台分配商户号</td>
+						</tr>
+						<tr>
+							<td>type</td>
+							<td style="text-align: left;">支付方式</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">1 支付宝 2 微信</td>
+						</tr>
+						<tr>
+							<td>param</td>
+							<td style="text-align: left;">附加参数</td>
+							<td style="text-align: left;">否</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">请勿使用符号如 & = $等以及update insert select等敏感词汇 </td>
+						</tr>
+						<tr>
+							<td>out_trade_no</td>
+							<td style="text-align: left;">订单号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">订单号唯一, 字符长度32</td>
+						</tr>
+						<tr>
+							<td>notify_url</td>
+							<td style="text-align: left;">服务端通知</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">服务端返回地址.（POST返回数据）</td>
+						</tr>
+						<tr>
+							<td>return_url</td>
+							<td style="text-align: left;">页面跳转通知</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">页面跳转返回地址（GET返回数据）</td>
+						</tr>
+						<tr>
+							<td>price</td>
+							<td style="text-align: left;">订单金额</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">单位：元</td>
+						</tr>
+						<tr>
+							<td>timestamp</td>
+							<td style="text-align: left;">时间戳</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">10位数时间戳</td>
+						</tr>
+						<tr>
+							<td>isHtml</td>
+							<td style="text-align: left;">返回类型</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">1 返回url 2 返回json</td>
+						</tr>
+						<tr>
+							<td>sign</td>
+							<td style="text-align: left;">MD5签名</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">否</td>
+							<td style="text-align: left;">请查看签名算法</td>
+						</tr>
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						当 isHtml为 <font style="color:red">1</font> 返回值
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>code</td>
+							<td style="text-align: left;">请求状态</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">200正确 其余状态均为错误</td>
+						</tr>	
+						<tr>
+							<td>msg</td>
+							<td style="text-align: left;">返回信息</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">返回提示信息</td>
+						</tr>							
+						<tr>
+							<td>data</td>
+							<td style="text-align: left;">订单信息（数据类型：集合）</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>	
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						返回值data参数
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>url</td>
+							<td style="text-align: left;">地址</td>			
+							<td style="text-align: left;">全地址 跳转即可</td>
+						</tr>	
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						当 isHtml为 <font style="color:red">2</font> 返回值
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>code</td>
+							<td style="text-align: left;">请求状态</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">200正确 其余状态均为错误</td>
+						</tr>	
+						<tr>
+							<td>msg</td>
+							<td style="text-align: left;">返回信息</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">返回提示信息</td>
+						</tr>							
+						<tr>
+							<td>data</td>
+							<td style="text-align: left;">订单信息（数据类型：集合）</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>	
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						返回值data参数
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">参数说明</th>
+								<th style="text-align: left;">示例</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>uid</td>
+							<td style="text-align: left;">用户id</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">1</td>
+						</tr>
+						<tr>
+							<td>out_trade_no</td>
+							<td style="text-align: left;">订单号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">E16221729054779129835659</td>
+						</tr>
+						<tr>
+							<td>type</td>
+							<td style="text-align: left;">支付方式 1支付宝 2微信</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">1</td>
+						</tr>
+						<tr>
+							<td>price</td>
+							<td style="text-align: left;">订单金额</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">0.01</td>
+						</tr>
+						<tr>
+							<td>reallyPrice</td>
+							<td style="text-align: left;">真实金额 （支付需以真实金额为准）</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">0.01</td>
+						</tr>
+						<tr>
+							<td>qrCode</td>
+							<td style="text-align: left;">二维码（文本 需转码）</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">https://qr.alipay.com/fkx19010tsh9emr5buozr1b</td>
+						</tr>
+						<tr>
+							<td>isAuto</td>
+							<td style="text-align: left;">是否固定金额</td>
+							<td style="text-align: left;">1 是 0否</td>
+							<td style="text-align: left;">1</td>
+						</tr>
+						<tr>
+							<td>status</td>
+							<td style="text-align: left;">支付状态</td>
+							<td style="text-align: left;">0待支付 -1 支付关闭 1已支付</td>
+							<td style="text-align: left;">0</td>
+						</tr>
+						<tr>
+							<td>closeTime</td>
+							<td style="text-align: left;">订单关闭时间</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">1622172977</td>
+						</tr>
+						<tr>
+							<td>createTime</td>
+							<td style="text-align: left;">订单创建时间</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">1622172917</td>
+						</tr>
+					</tbody>
+					</table>
+				 </div>
+			</div>
+			<div class="docs-mod" id="doc5">
+				<div class="docs-hd">
+					异步通知
+				</div>
+				<div class="docs-bd">
+					<div class="docs-sub">
+						提交方式：POST
+					</div>
+					<div class="docs-sub">
+						接收到服务器点对点通讯时，在页面输出“<span style="color:red">OK</span>”（ 没有双引号，OK 两个字母大写 ) ，否则会重复3次发送点对点通知.
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参与签名</th><th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>uid</td>
+							<td style="text-align: left;">商户编号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">平台分配商户号</td>
+						</tr>
+						<tr>
+							<td>out_trade_no</td>
+							<td style="text-align: left;">订单号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">上送订单号唯一, 字符长度20</td>
+						</tr>
+						<tr>
+							<td>price</td>
+							<td style="text-align: left;">订单金额</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">单位：元</td>
+						</tr>
+						<tr>
+							<td>reallyPrice</td>
+							<td style="text-align: left;">订单真实金额</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">单位：元</td>
+						</tr>
+						<tr>
+							<td>trade_no</td>
+							<td style="text-align: left;">交易流水号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">交易流水号</td>
+						</tr>
+                      <tr>
+							<td>timestamp</td>
+							<td style="text-align: left;">异步时间</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">10位数时间戳</td>
+						</tr>
+						<tr>
+							<td>code</td>
+							<td style="text-align: left;">交易状态</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">-1过期 0待支付 1完成 2通知失败 3待通知</td>
+						</tr>
+						<tr>
+							<td>type</td>
+							<td style="text-align: left;">支付方式</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">1 支付宝 2 微信</td>
+						</tr>
+						<tr>
+							<td>param</td>
+							<td style="text-align: left;">扩展返回</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">商户附加数据返回</td>
+						</tr>
+						<tr>
+							<td>sign</td>
+							<td style="text-align: left;">MD5签名</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">否</td>
+							<td style="text-align: left;"></td>
+						</tr>				
+					</tbody>
+					</table>
+				 </div>
+			</div>
+		
+			<div class="docs-mod" id="doc6">
+				<div class="docs-hd">
+					订单查询接口
+				</div>
+				<div class="docs-bd">
+					<div class="docs-sub">
+						提交方式：POST
+					</div>
+					<div class="docs-sub">
+						地址： 接入网关/orderQuery
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参与签名</th><th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>uid</td>
+							<td style="text-align: left;">商户编号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>
+						<tr>
+							<td>out_trade_no</td>
+							<td style="text-align: left;">商户订单号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>	
+						<tr>
+							<td>timestamp</td>
+							<td style="text-align: left;">时间戳</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">10位数时间戳</td>
+						</tr>
+						<tr>
+							<td>sign</td>
+							<td style="text-align: left;">MD5签名</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>					
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						返回值
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>code</td>
+							<td style="text-align: left;">请求状态</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">200正确 其余状态均为错误</td>
+						</tr>	
+						<tr>
+							<td>msg</td>
+							<td style="text-align: left;">返回信息</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">返回提示信息</td>
+						</tr>							
+						<tr>
+							<td>data</td>
+							<td style="text-align: left;">订单信息（数据类型：集合）</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>	
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						返回值data参数
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>out_trade_no</td>
+							<td style="text-align: left;">商户订单号</td>			
+							<td style="text-align: left;"></td>
+						</tr>	
+							<tr>
+							<td>trade_no</td>
+							<td style="text-align: left;">平台订单号</td>			
+							<td style="text-align: left;"></td>
+						</tr>							
+						<tr>
+							<td>price</td>
+							<td style="text-align: left;">订单金额</td>						
+							<td style="text-align: left;">单位：元</td>
+						</tr>	
+						<tr>
+							<td>type</td>
+							<td style="text-align: left;">支付方式</td>						
+							<td style="text-align: left;">1 支付宝 2 微信</td>
+						</tr>
+						<tr>
+							<td>payTime</td>
+							<td style="text-align: left;">支付成功时间</td>					
+							<td style="text-align: left;"></td>
+						</tr>
+						<tr>
+							<td>status</td>
+							<td style="text-align: left;">支付状态</td>					
+							<td style="text-align: left;">1完成 2通知失败 3待通知</td>
+						</tr>						
+					</tbody>
+					</table>
+				 </div>
+			</div>
+			<div class="docs-mod" id="doc7">
+				<div class="docs-hd">
+					订单状态查询接口
+				</div>
+				<div class="docs-bd">
+					<div class="docs-sub">
+						提交方式：POST
+					</div>
+					<div class="docs-sub">
+						地址： 接入网关/checkOrder
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参与签名</th><th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>out_trade_no</td>
+							<td style="text-align: left;">商户订单号</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						返回值
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">是否必填</th>
+								<th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>code</td>
+							<td style="text-align: left;">请求状态</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">200正确 其余状态均为错误</td>
+						</tr>	
+						<tr>
+							<td>msg</td>
+							<td style="text-align: left;">返回信息</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;">返回提示信息</td>
+						</tr>							
+						<tr>
+							<td>data</td>
+							<td style="text-align: left;">订单信息（数据类型：集合）</td>
+							<td style="text-align: left;">是</td>
+							<td style="text-align: left;"></td>
+						</tr>	
+					</tbody>
+					</table>
+					<div class="docs-sub">
+						返回值data参数
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>参数名称</th>
+								<th style="text-align: left;">参数含义</th>
+								<th style="text-align: left;">参数说明</th>
+							</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>out_trade_no</td>
+							<td style="text-align: left;">商户订单号</td>			
+							<td style="text-align: left;"></td>
+						</tr>	
+							<tr>
+							<td>trade_no</td>
+							<td style="text-align: left;">平台订单号</td>			
+							<td style="text-align: left;"></td>
+						</tr>							
+						<tr>
+							<td>price</td>
+							<td style="text-align: left;">订单金额</td>						
+							<td style="text-align: left;">单位：元</td>
+						</tr>	
+						<tr>
+							<td>type</td>
+							<td style="text-align: left;">支付方式</td>						
+							<td style="text-align: left;">1 支付宝 2 微信</td>
+						</tr>
+						<tr>
+							<td>payTime</td>
+							<td style="text-align: left;">支付成功时间</td>					
+							<td style="text-align: left;"></td>
+						</tr>
+						<tr>
+							<td>status</td>
+							<td style="text-align: left;">支付状态</td>					
+							<td style="text-align: left;">1完成 2通知失败 3待通知</td>
+						</tr>						
+					</tbody>
+					</table>
+				 </div>
+			</div>
+			
+                  
+            <div class="docs-mod"  id="doc66">
+				<div class="docs-hd">
+					签名算法
+				</div>
+				<div class="docs-bd">
+
+					<div>签名生成的通用步骤如下：</div>
+
+					<div class="pp">
+						第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
+					</div>
+
+					<div class="pp">
+						第二步，在stringA最后拼接上应用key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。
+					</div>
+
+					<div class="pp">
+						md5('notify_url=异步地址&out_trade_no=123&param=1&price=1&return_url=同步地址&timestamp=时间戳&type=1&uid=1&key=密钥')
+					</div>
+				</div>
+			</div>
+			
+			<div class="docs-mod"  id="doc8">
+				<div class="docs-hd">
+					app监控
+				</div>
+				<div class="docs-bd">
+					
+					手机设置步骤（教程为MIUI系统，非MIUI系统请参考教程进行设置）<br>
+
+					1.关闭系统神隐模式<br>
+					
+					（旧版MIUI系统）在系统【设置】 - 【其他高级设置】 - 【电量与性能】 - 【神隐模式】 - 【星云免签监控端】设置为关闭<br>
+					
+					（新版MIUI系统）在系统【设置】 - 【其他高级设置】 - 【电量与性能】 - 【省电优化】 - 【应用智能省电】，将星云免签监控端、微信、支付宝的3个APP全都改为无限制<br>
+					
+					2.添加内存清理白名单<br>
+					
+					3.关闭WIFI优化<br>
+					
+					（旧版MIUI系统）在系统【设置】 - 【WLAN】 -【高级设置】 -【WLAN优化】，关闭它。<br>
+					
+					（新版MIUI系统）在系统【设置】 - 【WLAN】 -【高级设置】 - 【在休眠状态下保持WLAN网络连接】改为“始终”<br>
+					
+					4.开启推送通知<br>
+					
+					5.系统【设置】 - 【通知和状态栏】 - 【通知管理】中，找到这3个App，把里面的开关全部打开<br>
+					
+					6.在微信的【设置】 - 【勿扰模式】中，关闭勿扰模式<br>
+					
+					7.在微信的公众号，关注 【微信收款助手】 这个公众号<br>
+					
+					8.在支付宝的主页，上方搜索框 搜索 【支付助手】 ，进入支付助手，右上角小齿轮，打开【接收付款消息提醒】<br>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<style>
+
+		.docs-bd div.pp{
+			margin-bottom: 8px;
+		}
+
+		.docs-bd th{
+			border:#dcdcdc solid 1px;
+			padding: 5px 10px;
+			font-weight: bold;
+
+		}
+
+
+		.docs-bd table{
+			border-collapse:collapse;
+			width:100%;
+
+		}
+		.docs-bd table tr td{
+			border:#dcdcdc solid 1px;
+			padding: 5px 10px;
+
+		}
+	</style>
+</div>
+
+<div class="copyright">
+    <div class="wrapper">
+        {$siteConf['footer']}
+    </div>
+</div>
+
+<script type="text/javascript">
+function openKefuLink()
+{
+    window.open("http://wpa.qq.com/msgrd?v=3&uin={$siteConf['qq']}&site=qq&menu=yes",'_blank');
+}
+
+</script>
+
+ 
+<script type="text/javascript" src="/home/default/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/home/default/js/wow.min.js"></script>
+<script type="text/javascript" src="/home/default/js/script.js"></script>
+<script type="text/javascript">
+	$(function() {
+	  $('.pro-sys-l li').click(function(){
+			$(this).addClass('on').siblings().removeClass('on');
+			$('.pro-sys-r').hide().eq($(this).index()).show();
+			return false
+		})
+	})
+</script>
+</body>
+</html>
