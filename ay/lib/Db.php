@@ -378,7 +378,7 @@ class Db
      */
     public function select()
     {
-        $sql = 'SELECT ' . trim($this->field) . ' FROM ' . self::$table . ' ' . trim($this->where) . ' ' . trim($this->order) . ' ' . trim($this->limit) . " " . trim($this->group);
+        $sql = 'SELECT ' . trim($this->field) . ' FROM ' . self::$table . ' ' . trim($this->where) . ' ' . trim($this->order)  . " " . trim($this->group) . ' ' . trim($this->limit);
         $this->clear = 1;
         $this->clear();
         $res = $this->doQuery(trim($sql));
@@ -391,7 +391,7 @@ class Db
      */
     public function find()
     {
-        $sql = "SELECT " . trim($this->field) . " FROM " . self::$table . " " . trim($this->where) . " " . trim($this->order) . " " . trim(" LIMIT 1") . " " . trim($this->group);
+        $sql = "SELECT " . trim($this->field) . " FROM " . self::$table . " " . trim($this->where) . " " . trim($this->order) . " " . trim($this->group) . " " . trim(" LIMIT 1");
         $this->clear = 1;
         $this->clear();
         return $this->doQuery(trim($sql), false);
