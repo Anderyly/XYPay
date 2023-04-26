@@ -43,6 +43,8 @@
     5、至此网站搭建完毕，请访问后自行修改配置信息！默认后台账号为admin 密码为 123456
     
     6、如果您需要重置您的key，需要同时更改config/init.php里面的key
+    
+    ps: 用户地址既是后台地址 第一个用户为管理员，第六点 key为第一个用户app免签key
 
 
 ## 调用
@@ -54,6 +56,6 @@
 星云免签遵循 Apache-2.0 License 开源协议发布，并提供免费使用，请勿用于非法用途。
 
 
-版权所有Copyright © 2020 by anderyly (http://vclove.cn)
+版权所有Copyright © 2020 by anderyly (http://blog.aaayun.cc)
 
 All rights reserved。
