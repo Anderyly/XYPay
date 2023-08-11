@@ -38,11 +38,11 @@
     
     3、打开网站目录 config/database.php ，设置好您的mysql账号密码。
     
-    4、导入数据库文件（位于根目录）sql.sql到您的数据库，并修改pay_config里的极验证。
+    4、导入数据库文件（位于根目录）sql.sql到您的数据库，并修改pay_config里的极验证，id为geetId字段，key为geetKey字段。
     
     5、至此网站搭建完毕，请访问后自行修改配置信息！默认后台账号为admin 密码为 123456
     
-    6、如果您需要重置您的key，需要同时更改config/init.php里面的key
+    6、如果您需要重置您的key，需要同时更改config/init.php里面的key以及app/user/controller/Notify.php里面的key
     
     ps: 用户地址既是后台地址 第一个用户为管理员，第六点 key为第一个用户app免签key
 
